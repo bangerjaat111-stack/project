@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import {ValidName,ValidEmail,ValidGender,ValidPassword,ValidMobile,ValidPincode} from '../validation/validation.js'
-
+import bcrypt from 'bcrypt'
 const userSchema = new mongoose.Schema({
     userImg: { type: Object },
     avatar: { type: Object, default: 'https:/' },
@@ -40,6 +40,12 @@ const userSchema = new mongoose.Schema({
     }
 },
     {timestamps:true}
+
+    
 )
+userSchema.pre('save', async function() {
+    this.password = await bcrypt.hash(this.password, 10)
+    
+})
 
 export const user_model=mongoose.model('user',userSchema)

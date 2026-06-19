@@ -1,6 +1,6 @@
 import express from 'express'
-import mongoose from 'mongoose' 
-import {router} from '../src/routes/routes.js'
+import mongoose from 'mongoose'
+import { router } from '../src/routes/routes.js'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
@@ -14,5 +14,5 @@ mongoose.connect(process.env.MongooseDBUrl)
     .then(() => console.log("mongoose db is connected"))
     .catch((err) => console.log(err.message))
 
-app.use('/',router)
+app.use('/', router)
 app.listen(port, () => console.log(`server is running on port http://localhost:${port}`))

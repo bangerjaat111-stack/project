@@ -16,16 +16,15 @@ const transporter = nodemailer.createTransport({
 export const user_otp = async (firstname, lastname, email, otp) => {
   try {
     const info = await transporter.sendMail({
-      from: SMTP_USER,
+      from: process.env.SMTP_USER,
       to: email,
       subject: "Hello",
       text: "Hello world?",
-      html: `<b>Hello world?</b> ${name} ${otp}`,
+      html: `<b>Hello world?</b> ${firstname} ${lastname} ${email} ${otp}`,
     });
 
     console.log("Message sent: %s", info.messageId);
-    // Preview URL is only available when using an Ethereal test account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    
   } catch (err) {
     console.error("Error while sending mail:", err);
   }
@@ -35,16 +34,15 @@ export const resend_otp = async (firstname, lastname, email, otp) => {
 
   try {
     const info = await transporter.sendMail({
-      from: SMTP_USER,
+      from: process.env.SMTP_USER,
       to: email,
       subject: "Hello",
       text: "Hello world?",
-      html: `<b>Hello world?</b> ${name} ${otp}`,
+      html: `<b>Hello world?</b> ${firstname} ${lastname} ${email} ${otp}`,
     });
 
     console.log("Message sent: %s", info.messageId);
-    // Preview URL is only available when using an Ethereal test account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    
   } catch (err) {
     console.error("Error while sending mail:", err);
   }

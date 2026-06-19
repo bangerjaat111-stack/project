@@ -2,6 +2,7 @@ import { user_model } from "../model/user_model.js"
 import crypto, { verify } from 'crypto'
 import { user_otp, resend_otp } from '../mail/mail.js'
 import { errorhandling } from '../error/allerror.js'
+import {UploadProfileImg} from '../img/img_url.js'
 
 export const create_user = async (req, res) => {
     try {
