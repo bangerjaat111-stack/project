@@ -1,12 +1,14 @@
-import { user_model } from "../model/user_model.js"
-import crypto, { verify } from 'crypto'
+import  {user_model}  from "../model/user_model.js"
+import crypto from 'crypto'
 import { user_otp, resend_otp } from '../mail/mail.js'
 import { errorhandling } from '../error/allerror.js'
 import {UploadProfileImg} from '../img/img_url.js'
-
+ 
 export const create_user = async (req, res) => {
     try {
         const data = req.body
+        const file=req.file
+        
         const { firstname, lastname, email, gender, mobile, password } = data
         let expirytime = Date.now() + 1000 * 60 * 5
         let randomotp = crypto.randomInt(1000, 9999)
@@ -28,9 +30,14 @@ export const create_user = async (req, res) => {
 
         }
         const uploaddata = {
-            firstname, lastname, email: normalizedemail, gender, mobile, password, role: 'user',
+           userImg:{}, firstname, lastname, email: normalizedemail, gender, mobile, password, role: 'user',
             verification: { user: { otp: randomotp, otpExpiryTime: expirytime } }
         }
+         if (file) {
+            const imgUrl = await UploadProfileImg(file.path)
+            uploaddata.userImg = imgUrl
+        }
+
         user_otp(firstname, lastname, email, randomotp)
         const db = await user_model.create(uploaddata)
         res.send({
@@ -38,8 +45,21 @@ export const create_user = async (req, res) => {
                 { id: db._id, firstname, lastname, email }
         })
 
-    }
+    }   
 
     catch (err) { errorhandling(err, res) }
 
+}
+
+export const verifyotp= async(req,res)=>{
+    try{
+    const {id}=req.query
+    const {otp}=req.body
+
+    if(!id) return res.status(400).send({status:false,msg:'id is not found'})
+    if(!otp) return res.status(400).send({status:false,msg:'otp is not found'})
+        
+    }
+
+    catch(err){console.log(err.message)}
 }

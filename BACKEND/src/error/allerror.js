@@ -9,6 +9,7 @@ export const errorhandling = (err, res) => {
 
         return res.status(400).send({ status: false, type: 'Validation Error', totalErrors: errors.length, errors })
     }
+    console.log(err.message)
 
    return res.status(500).send({status: false,type: 'Server Error',msg: err.message || 'Internal Server Error...' })
 }

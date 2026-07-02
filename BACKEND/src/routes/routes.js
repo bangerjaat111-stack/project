@@ -1,5 +1,9 @@
 import express from 'express'
-import {create_user} from '../controller/user_controller.js'
-export const router=express.Router()
+import { create_user ,verifyotp} from '../controller/user_controller.js'
+import multer from 'multer'
 
-router.post('/create_user',create_user)
+const upload = multer({ storage: multer.diskStorage({}) });
+
+export const router = express.Router()
+router.post('/create_user', upload.single("userImg"), create_user)
+router.post('/verifyotp:id',verifyotp)
